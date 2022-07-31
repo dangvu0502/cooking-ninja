@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // styles
 import "./RecipeList.css";
 
-export default function RecipeList({ recipes }) {
+export default function RecipeList({ recipes, handleDelete }) {
   if (recipes.length === 0) {
     return <div className="error"> No recipes to load...</div>;
   }
@@ -12,6 +12,9 @@ export default function RecipeList({ recipes }) {
     <div className="recipe-list">
       {recipes.map((recipe) => (
         <div key={recipe.id} className="card">
+          <button onClick={handleDelete} name={recipe.id}>
+            X
+          </button>
           <h3>{recipe.title}</h3>
           <p>{recipe.cookingTime} to make.</p>
           <div>{recipe.method.substring(0, 100)}...</div>

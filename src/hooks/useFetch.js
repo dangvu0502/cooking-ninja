@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
-export const useFetch = (url, method = "GET") => {
+export const useFetch = ({ url, method = "GET" }) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
-
   const postData = (postData) => {
     setOptions({
       method: "POST",
@@ -16,14 +15,24 @@ export const useFetch = (url, method = "GET") => {
     });
   };
 
+  const deleteData = (id) => {
+    setOptions({
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    });
+  };
+
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchData = async (fetchOptions) => {
+    const fetchData = async (fetchOptions, id = "") => {
       setIsPending(true);
-
+      console.log(fetchOptions);
       try {
-        const res = await fetch(url, {
+        const res = await fetch(`${url}\\${id}`, {
           ...fetchOptions,
           signal: controller.signal,
         });
@@ -31,7 +40,6 @@ export const useFetch = (url, method = "GET") => {
           throw new Error(res.statusText);
         }
         const data = await res.json();
-
         setIsPending(false);
         setData(data);
         setError(null);
@@ -53,10 +61,15 @@ export const useFetch = (url, method = "GET") => {
       fetchData(options);
     }
 
+    if (method === "DELETE" && options) {
+      console.log(options);
+      fetchData(options, JSON.parse(options.body).id);
+    }
+
     return () => {
       controller.abort();
     };
   }, [url, method, options]);
 
-  return { data, isPending, error, postData };
+  return { data, isPending, error, postData, deleteData };
 };
