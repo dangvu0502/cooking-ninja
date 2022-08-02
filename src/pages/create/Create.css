@@ -31,3 +31,14 @@
 .ingredients button {
   margin: 0 0 0 10px;
 }
+
+/* dark mode */
+.create.dark,
+.create.dark form {
+  background: #333;
+  color: #e4e4e4;
+}
+
+.page-title.dark {
+  color: #e4e4e4;
+}

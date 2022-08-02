@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme";
 
 // styles
 import "./RecipeList.css";
 
 export default function RecipeList({ recipes, handleDelete }) {
+  const { mode } = useTheme();
+
   if (recipes.length === 0) {
-    return <div className="error"> No recipes to load...</div>;
+    return <div className={`error ${mode}`}> No recipes to load...</div>;
   }
 
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
-        <div key={recipe.id} className="card">
+        <div key={recipe.id} className={`card ${mode}`}>
           <button onClick={handleDelete} name={recipe.id}>
             X
           </button>

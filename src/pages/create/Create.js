@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 // styles
 import "./Create.css";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function Create() {
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ export default function Create() {
   const [newIngredient, setNewIngredient] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const ingredientInput = useRef(null);
+  const { mode, color } = useTheme();
   const navitage = useNavigate();
 
   const { postData, data, error } = useFetch({
@@ -47,8 +49,8 @@ export default function Create() {
   };
 
   return (
-    <div className="create">
-      <h2 className="page-title">Add a New Recipe</h2>
+    <div className={`create ${mode}`}>
+      <h2 className={`page-title ${mode}`}>Add a New Recipe</h2>
       <form onSubmit={handleSubmit}>
         <label>
           <span>Recipe title:</span>
@@ -69,7 +71,11 @@ export default function Create() {
               value={newIngredient}
               ref={ingredientInput}
             />
-            <button onClick={handleAdd} className="btn">
+            <button
+              onClick={handleAdd}
+              className="btn"
+              style={{ backgroundColor: color }}
+            >
               add
             </button>
           </div>
@@ -100,7 +106,9 @@ export default function Create() {
           />
         </label>
 
-        <button className="btn">submit</button>
+        <button className="btn" style={{ backgroundColor: color }}>
+          submit
+        </button>
       </form>
     </div>
   );

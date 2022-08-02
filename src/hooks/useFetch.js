@@ -28,11 +28,11 @@ export const useFetch = ({ url, method = "GET" }) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchData = async (fetchOptions, id = "") => {
+    const fetchData = async (fetchOptions, id) => {
       setIsPending(true);
-      console.log(fetchOptions);
+      url += id ? "/" + id : "";
       try {
-        const res = await fetch(`${url}\\${id}`, {
+        const res = await fetch(url, {
           ...fetchOptions,
           signal: controller.signal,
         });
